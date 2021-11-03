@@ -37,7 +37,7 @@ public class WalletRpcController {
      * @param walletName wallet name
      * @return new created wallet
      */
-    @PutMapping("/wallet")
+    @PostMapping("/wallet")
     private final ResponseEntity<Object> createWallet(@RequestParam String id,
                                                       @RequestParam String walletName) {
         return walletRpcService.createWallet(id, walletName);

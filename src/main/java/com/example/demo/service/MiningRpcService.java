@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -14,7 +13,7 @@ import java.util.Map;
 
 @Slf4j
 @Service
-public class BlockRpcService {
+public class MiningRpcService {
 
     @Value("${bitcoin.rpc.username}")
     private String username;
@@ -28,38 +27,18 @@ public class BlockRpcService {
     @Autowired
     private RestTemplate restTemplate;
 
+
     /**
-     * Method returns block count
+     * Method will return mining info
      *
-     * @return block count
+     * @return
      */
-    public ResponseEntity<Object> getBlockCount() {
-        Map<String,Object> body = getRequestBody(1L,"getblockcount");
+    public ResponseEntity<Object> getMiningInfo() {
+        Map<String, Object> body = getRequestBody("testRpc", "getmininginfo");
 
         HttpEntity<Map<String,Object>> request = new HttpEntity<>(body,getHeaders());
 
         return ResponseEntity.status(HttpStatus.OK).body(restTemplate.postForObject(url , request, Object.class));
-    }
-
-
-    /**
-     * Method returns current difficulty
-     *
-     * @return
-     */
-    public ResponseEntity<Object> getDifficulty() {
-
-        Map<String,Object> body = new HashMap<>();
-        body.put("jsonrpc", "1.0");
-        body.put("id", "testRPC");
-        body.put("method", "getdifficulty");
-        body.put("params", new ArrayList<>());
-
-        HttpEntity<Map<String,Object>> request = new HttpEntity<>(body,getHeaders());
-
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(restTemplate.postForObject(url, request, Object.class));
 
     }
 
@@ -71,7 +50,7 @@ public class BlockRpcService {
      * @param method name of the rcp method
      * @return request body
      */
-    public Map<String, Object> getRequestBody(final long id, final String method) {
+    public Map<String, Object> getRequestBody(final String id, final String method) {
         Map<String, Object> body = new HashMap<>();
         body.put("jsonrpc", "1.0");
         body.put("id", id);

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = "/api/v1/bitcoin-testnet-block")
 public class BlockRpcController {
 
+
     private final BlockRpcService blockRpcService;
 
     public BlockRpcController(BlockRpcService blockRpcService) {
@@ -23,4 +24,9 @@ public class BlockRpcController {
         return blockRpcService.getBlockCount();
     }
 
+
+    @GetMapping("/difficulty")
+    private final ResponseEntity<Object> getDifficulty() {
+        return blockRpcService.getDifficulty();
+    }
 }
